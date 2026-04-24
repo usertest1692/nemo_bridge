@@ -4,6 +4,7 @@
 #include <WiFi.h>
 #include <WiFiClientSecure.h>
 #include <HTTPClient.h>
+#include <time.h>
 
 // ==========================================
 // CONFIGURATION (Injected via GitHub Secrets)
@@ -44,16 +45,21 @@ void tg_send_message(String text) {
   
   http.begin(tg_client, url);
   int httpCode = http.GET();
+  if (httpCode != 200) {
+    Serial.print("[TG] Send Failed. Code: ");
+    Serial.println(httpCode);
+  }
   http.end();
 }
 
 void tg_process_command(String cmd) {
   cmd.trim();
   if (cmd == "/test") {
-    tg_send_message("M5Stick Nemo is ONLINE! 🚀");
+    tg_send_message("M5Stick Hybrid is ONLINE! 🚀");
   } else if (cmd == "/status") {
     String status = "System Status:\n";
     status += "WiFi: Connected\n";
+    status += "RSSI: " + String(WiFi.RSSI()) + " dBm\n";
     status += "Uptime: " + String(millis() / 60000) + " min";
     tg_send_message(status);
   } else if (cmd == "/reboot") {
@@ -74,7 +80,6 @@ void tg_poll() {
   
   if (httpCode == 200) {
     String payload = http.getString();
-    // Minimal parser to find "text":"..." and "update_id":...
     if (payload.indexOf("\"update_id\":") != -1) {
       int idPos = payload.indexOf("\"update_id\":") + 12;
       tg_last_update_id = payload.substring(idPos, payload.indexOf(",", idPos)).toInt();
@@ -98,9 +103,9 @@ void telegram_bridge_setup() {
   Serial.println("\n--- TELEGRAM BRIDGE STARTUP ---");
   Serial.print("[TG] Target SSID: "); Serial.println(TG_SSID);
   
-  // SYNC TIME for SSL
-  configTime(0, 0, "pool.ntp.org", "time.nist.gov");
-  Serial.println("[TG] NTP Sync Started...");
+  // SYNC TIME for SSL (India GMT +5:30)
+  configTime(19800, 0, "pool.ntp.org", "time.nist.gov");
+  Serial.println("[TG] NTP Sync Started (India Timezone)...");
   
   WiFi.begin(TG_SSID, TG_PASS);
 }
@@ -130,6 +135,15 @@ void telegram_bridge_loop() {
       wasConnected = true;
       Serial.print("[TG] SUCCESS! IP: ");
       Serial.println(WiFi.localIP());
+      Serial.println("[TG] Waiting 5s for Time Sync...");
+      delay(5000); 
+      
+      struct tm timeinfo;
+      if (getLocalTime(&timeinfo)) {
+        Serial.print("[TG] Time Sync OK: ");
+        Serial.println(&timeinfo, "%A, %B %d %Y %H:%M:%S");
+      }
+      
       tg_send_message("M5Stick Hybrid is ONLINE! 🚀\nIP: " + WiFi.localIP().toString());
     }
     

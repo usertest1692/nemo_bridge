@@ -53,7 +53,7 @@ uint16_t FGCOLOR=0xFFF1; // placeholder
 
   // -=-=- ALIASES -=-=-
   #define DISP M5.Display
-  #define IRLED 19 // PLUS2 SHELL FIX: Pin 19
+  #define IRLED 9 // HYBRID FIX: PICO chip usually uses Pin 9 for IR
   #define SPEAKER M5.Speaker
   //#define BITMAP M5.Display.drawBitmap(0, 0, 320, 240, NEMOMatrix) // This doesn't work, generates static.
   #define BITMAP Serial.println("unsupported")
