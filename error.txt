@@ -1,0 +1,545 @@
+
+Run set -x
++ version=2296a2d
++ locale=en-us
+++ echo LANGUAGE_en_us
+++ tr '[:lower:]' '[:upper:]'
++ language=LANGUAGE_EN_US
++ extra_flags='-DSTICK_C_PLUS -DNEMO_VERSION="2296a2d" -DLANGUAGE_EN_US -DTG_SSID="***" -DTG_PASS="***" -DTG_TOKEN="***" -DTG_CHAT_ID="***"'
++ arduino-cli compile --fqbn m5stack:esp32:m5stack_stickc_plus -e --build-property build.partitions=huge_app --build-property upload.maximum_size=3145728 --build-property 'compiler.cpp.extra_flags=-DSTICK_C_PLUS -DNEMO_VERSION="2296a2d" -DLANGUAGE_EN_US -DTG_SSID="***" -DTG_PASS="***" -DTG_TOKEN="***" -DTG_CHAT_ID="***"' ./nemo_bridge.ino
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:2598:1: error: 'DeauthStats' does not name a type
+ DeauthStats deauth_stats;
+ ^~~~~~~~~~~
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino: In function 'void add_unique_ap(const char*)':
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:2630:3: error: 'deauth_stats' was not declared in this scope
+   deauth_stats.unique_aps = seen_ap_macs.size();
+   ^~~~~~~~~~~~
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:2630:3: note: suggested alternative: 'dhcps_state'
+   deauth_stats.unique_aps = seen_ap_macs.size();
+   ^~~~~~~~~~~~
+   dhcps_state
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino: In function 'void hop_channel()':
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:2659:55: error: 'NUM_CHANNELS' was not declared in this scope
+     current_channel_idx = (current_channel_idx + 1) % NUM_CHANNELS;
+                                                       ^~~~~~~~~~~~
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:2659:55: note: suggested alternative: 'ADC_CHANNEL_9'
+     current_channel_idx = (current_channel_idx + 1) % NUM_CHANNELS;
+                                                       ^~~~~~~~~~~~
+                                                       ADC_CHANNEL_9
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:2660:26: error: 'WIFI_CHANNELS' was not declared in this scope
+     esp_wifi_set_channel(WIFI_CHANNELS[current_channel_idx], WIFI_SECOND_CHAN_NONE);
+                          ^~~~~~~~~~~~~
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:2660:26: note: suggested alternative: 'WIFI_PS_NONE'
+     esp_wifi_set_channel(WIFI_CHANNELS[current_channel_idx], WIFI_SECOND_CHAN_NONE);
+                          ^~~~~~~~~~~~~
+                          WIFI_PS_NONE
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino: In function 'void reset_stats_if_needed()':
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:2668:12: error: 'deauth_stats' was not declared in this scope
+   if(now - deauth_stats.last_reset_time > 1000) { // 1 second cycle
+            ^~~~~~~~~~~~
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:2668:12: note: suggested alternative: 'dhcps_state'
+   if(now - deauth_stats.last_reset_time > 1000) { // 1 second cycle
+            ^~~~~~~~~~~~
+            dhcps_state
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino: In function 'void deauth_sniffer_callback(void*, wifi_promiscuous_pkt_type_t)':
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:2692:7: error: 'deauth_stats' was not declared in this scope
+       deauth_stats.total_deauths++;
+       ^~~~~~~~~~~~
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:2692:7: note: suggested alternative: 'dhcps_state'
+       deauth_stats.total_deauths++;
+       ^~~~~~~~~~~~
+       dhcps_state
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino: In function 'void start_deauth_monitoring()':
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:2747:24: error: 'WIFI_CHANNELS' was not declared in this scope
+   esp_wifi_set_channel(WIFI_CHANNELS[current_channel_idx], WIFI_SECOND_CHAN_NONE);
+                        ^~~~~~~~~~~~~
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:2747:24: note: suggested alternative: 'WIFI_PS_NONE'
+   esp_wifi_set_channel(WIFI_CHANNELS[current_channel_idx], WIFI_SECOND_CHAN_NONE);
+                        ^~~~~~~~~~~~~
+                        WIFI_PS_NONE
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:2751:3: error: 'deauth_stats' was not declared in this scope
+   deauth_stats.last_reset_time = scan_cycle_start;
+   ^~~~~~~~~~~~
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:2751:3: note: suggested alternative: 'dhcps_state'
+   deauth_stats.last_reset_time = scan_cycle_start;
+   ^~~~~~~~~~~~
+   dhcps_state
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino: In function 'void deauth_hunter_setup()':
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:2769:11: error: 'deauth_stats' was not declared in this scope
+   memset(&deauth_stats, 0, sizeof(DeauthStats));
+           ^~~~~~~~~~~~
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:2769:11: note: suggested alternative: 'dhcps_state'
+   memset(&deauth_stats, 0, sizeof(DeauthStats));
+           ^~~~~~~~~~~~
+           dhcps_state
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:2769:35: error: 'DeauthStats' was not declared in this scope
+   memset(&deauth_stats, 0, sizeof(DeauthStats));
+                                   ^~~~~~~~~~~
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino: In function 'void deauth_hunter_loop()':
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:2820:23: error: 'WIFI_CHANNELS' was not declared in this scope
+   DISP.printf("%-2d", WIFI_CHANNELS[current_channel_idx]);
+                       ^~~~~~~~~~~~~
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:2820:23: note: suggested alternative: 'WIFI_PS_NONE'
+   DISP.printf("%-2d", WIFI_CHANNELS[current_channel_idx]);
+                       ^~~~~~~~~~~~~
+                       WIFI_PS_NONE
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:2822:25: error: 'deauth_stats' was not declared in this scope
+   DISP.printf("%-2d\n", deauth_stats.unique_aps);
+                         ^~~~~~~~~~~~
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:2822:25: note: suggested alternative: 'dhcps_state'
+   DISP.printf("%-2d\n", deauth_stats.unique_aps);
+                         ^~~~~~~~~~~~
+                         dhcps_state
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino: At global scope:
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:2841:1: error: 'BLEStats' does not name a type; did you mean 'BLEUtils'?
+ BLEStats ble_stats;
+ ^~~~~~~~
+ BLEUtils
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:2845:13: error: 'BLEDeviceInfo' was not declared in this scope
+ std::vector<BLEDeviceInfo> seen_ble_devices;
+             ^~~~~~~~~~~~~
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:2845:13: note: suggested alternative: 'BLEDevice'
+ std::vector<BLEDeviceInfo> seen_ble_devices;
+             ^~~~~~~~~~~~~
+             BLEDevice
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:2845:26: error: template argument 1 is invalid
+ std::vector<BLEDeviceInfo> seen_ble_devices;
+                          ^
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:2845:26: error: template argument 2 is invalid
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:2848:6: error: 'BLEHunterCallback' has not been declared
+ void BLEHunterCallback::onResult(BLEAdvertisedDevice advertisedDevice) {
+      ^~~~~~~~~~~~~~~~~
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino: In function 'void onResult(BLEAdvertisedDevice)':
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:2864:3: error: 'ble_stats' was not declared in this scope
+   ble_stats.total_devices++;
+   ^~~~~~~~~
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:2864:3: note: suggested alternative: 'setstate'
+   ble_stats.total_devices++;
+   ^~~~~~~~~
+   setstate
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino: In function 'void add_unique_ble_device(const String&, const String&, int32_t)':
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:2876:23: error: 'begin' was not declared in this scope
+   for (auto& device : seen_ble_devices) {
+                       ^~~~~~~~~~~~~~~~
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:2876:23: note: suggested alternative:
+In file included from /home/runner/.arduino15/packages/m5stack/tools/xtensa-esp32-elf-gcc/esp-2021r2-patch5-8.4.0/xtensa-esp32-elf/include/c++/8.4.0/string:51,
+                 from /home/runner/.arduino15/packages/m5stack/tools/xtensa-esp32-elf-gcc/esp-2021r2-patch5-8.4.0/xtensa-esp32-elf/include/c++/8.4.0/stdexcept:39,
+                 from /home/runner/.arduino15/packages/m5stack/tools/xtensa-esp32-elf-gcc/esp-2021r2-patch5-8.4.0/xtensa-esp32-elf/include/c++/8.4.0/array:39,
+                 from /home/runner/.arduino15/packages/m5stack/tools/xtensa-esp32-elf-gcc/esp-2021r2-patch5-8.4.0/xtensa-esp32-elf/include/c++/8.4.0/tuple:39,
+                 from /home/runner/.arduino15/packages/m5stack/tools/xtensa-esp32-elf-gcc/esp-2021r2-patch5-8.4.0/xtensa-esp32-elf/include/c++/8.4.0/functional:54,
+                 from /home/runner/.arduino15/packages/m5stack/hardware/esp32/2.1.0/cores/esp32/HardwareSerial.h:49,
+                 from /home/runner/.arduino15/packages/m5stack/hardware/esp32/2.1.0/cores/esp32/Arduino.h:184,
+                 from /tmp/arduino/sketches/352C6437883A14629D62955983751BE1/sketch/nemo_bridge.ino.cpp:1:
+/home/runner/.arduino15/packages/m5stack/tools/xtensa-esp32-elf-gcc/esp-2021r2-patch5-8.4.0/xtensa-esp32-elf/include/c++/8.4.0/bits/range_access.h:87:5: note:   'std::begin'
+     begin(_Tp (&__arr)[_Nm])
+     ^~~~~
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:2876:23: error: 'end' was not declared in this scope
+   for (auto& device : seen_ble_devices) {
+                       ^~~~~~~~~~~~~~~~
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:2876:23: note: suggested alternative:
+In file included from /home/runner/.arduino15/packages/m5stack/tools/xtensa-esp32-elf-gcc/esp-2021r2-patch5-8.4.0/xtensa-esp32-elf/include/c++/8.4.0/string:51,
+                 from /home/runner/.arduino15/packages/m5stack/tools/xtensa-esp32-elf-gcc/esp-2021r2-patch5-8.4.0/xtensa-esp32-elf/include/c++/8.4.0/stdexcept:39,
+                 from /home/runner/.arduino15/packages/m5stack/tools/xtensa-esp32-elf-gcc/esp-2021r2-patch5-8.4.0/xtensa-esp32-elf/include/c++/8.4.0/array:39,
+                 from /home/runner/.arduino15/packages/m5stack/tools/xtensa-esp32-elf-gcc/esp-2021r2-patch5-8.4.0/xtensa-esp32-elf/include/c++/8.4.0/tuple:39,
+                 from /home/runner/.arduino15/packages/m5stack/tools/xtensa-esp32-elf-gcc/esp-2021r2-patch5-8.4.0/xtensa-esp32-elf/include/c++/8.4.0/functional:54,
+                 from /home/runner/.arduino15/packages/m5stack/hardware/esp32/2.1.0/cores/esp32/HardwareSerial.h:49,
+                 from /home/runner/.arduino15/packages/m5stack/hardware/esp32/2.1.0/cores/esp32/Arduino.h:184,
+                 from /tmp/arduino/sketches/352C6437883A14629D62955983751BE1/sketch/nemo_bridge.ino.cpp:1:
+/home/runner/.arduino15/packages/m5stack/tools/xtensa-esp32-elf-gcc/esp-2021r2-patch5-8.4.0/xtensa-esp32-elf/include/c++/8.4.0/bits/range_access.h:97:5: note:   'std::end'
+     end(_Tp (&__arr)[_Nm])
+     ^~~
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:2885:24: error: request for member 'size' in 'seen_ble_devices', which is of non-class type 'int'
+   if (seen_ble_devices.size() >= MAX_BLE_DEVICES) {
+                        ^~~~
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:2885:34: error: 'MAX_BLE_DEVICES' was not declared in this scope
+   if (seen_ble_devices.size() >= MAX_BLE_DEVICES) {
+                                  ^~~~~~~~~~~~~~~
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:2885:34: note: suggested alternative: 'MAIN_BLEDEVICE_H_'
+   if (seen_ble_devices.size() >= MAX_BLE_DEVICES) {
+                                  ^~~~~~~~~~~~~~~
+                                  MAIN_BLEDEVICE_H_
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:2890:3: error: 'BLEDeviceInfo' was not declared in this scope
+   BLEDeviceInfo newDevice;
+   ^~~~~~~~~~~~~
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:2890:3: note: suggested alternative: 'BLEDevice'
+   BLEDeviceInfo newDevice;
+   ^~~~~~~~~~~~~
+   BLEDevice
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:2891:3: error: 'newDevice' was not declared in this scope
+   newDevice.mac = mac;
+   ^~~~~~~~~
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:2891:3: note: suggested alternative: 'BLEDevice'
+   newDevice.mac = mac;
+   ^~~~~~~~~
+   BLEDevice
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:2897:20: error: request for member 'push_back' in 'seen_ble_devices', which is of non-class type 'int'
+   seen_ble_devices.push_back(newDevice);
+                    ^~~~~~~~~
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:2898:3: error: 'ble_stats' was not declared in this scope
+   ble_stats.unique_devices = seen_ble_devices.size();
+   ^~~~~~~~~
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:2898:3: note: suggested alternative: 'setstate'
+   ble_stats.unique_devices = seen_ble_devices.size();
+   ^~~~~~~~~
+   setstate
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:2898:47: error: request for member 'size' in 'seen_ble_devices', which is of non-class type 'int'
+   ble_stats.unique_devices = seen_ble_devices.size();
+                                               ^~~~
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino: In function 'void start_ble_monitoring()':
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:2933:49: error: expected type-specifier before 'BLEHunterCallback'
+   ble_scanner->setAdvertisedDeviceCallbacks(new BLEHunterCallback());
+                                                 ^~~~~~~~~~~~~~~~~
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:2935:28: error: 'BLE_SCAN_INTERVAL' was not declared in this scope
+   ble_scanner->setInterval(BLE_SCAN_INTERVAL);
+                            ^~~~~~~~~~~~~~~~~
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:2935:28: note: suggested alternative: 'TCP_TMR_INTERVAL'
+   ble_scanner->setInterval(BLE_SCAN_INTERVAL);
+                            ^~~~~~~~~~~~~~~~~
+                            TCP_TMR_INTERVAL
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:2936:26: error: 'BLE_SCAN_WINDOW' was not declared in this scope
+   ble_scanner->setWindow(BLE_SCAN_WINDOW);
+                          ^~~~~~~~~~~~~~~
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino: In function 'void reset_ble_stats_if_needed()':
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:2956:13: error: 'ble_stats' was not declared in this scope
+   if (now - ble_stats.last_reset_time > 10000) { // Reset every 10 seconds
+             ^~~~~~~~~
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:2956:13: note: suggested alternative: 'setstate'
+   if (now - ble_stats.last_reset_time > 10000) { // Reset every 10 seconds
+             ^~~~~~~~~
+             setstate
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:2964:22: error: request for member 'erase' in 'seen_ble_devices', which is of non-class type 'int'
+     seen_ble_devices.erase(
+                      ^~~~~
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:2965:39: error: request for member 'begin' in 'seen_ble_devices', which is of non-class type 'int'
+       std::remove_if(seen_ble_devices.begin(), seen_ble_devices.end(),
+                                       ^~~~~
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:2965:65: error: request for member 'end' in 'seen_ble_devices', which is of non-class type 'int'
+       std::remove_if(seen_ble_devices.begin(), seen_ble_devices.end(),
+                                                                 ^~~
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:2966:21: error: 'BLEDeviceInfo' does not name a type; did you mean 'BLEDevice'?
+         [now](const BLEDeviceInfo& device) {
+                     ^~~~~~~~~~~~~
+                     BLEDevice
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino: In lambda function:
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:2968:11: error: expected '{' before ',' token
+         }),
+           ^
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino: In function 'void reset_ble_stats_if_needed()':
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:2969:24: error: request for member 'end' in 'seen_ble_devices', which is of non-class type 'int'
+       seen_ble_devices.end()
+                        ^~~
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:2973:29: error: request for member 'size' in 'seen_ble_devices', which is of non-class type 'int'
+     while (seen_ble_devices.size() > MAX_BLE_DEVICES) {
+                             ^~~~
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:2973:38: error: 'MAX_BLE_DEVICES' was not declared in this scope
+     while (seen_ble_devices.size() > MAX_BLE_DEVICES) {
+                                      ^~~~~~~~~~~~~~~
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:2973:38: note: suggested alternative: 'MAIN_BLEDEVICE_H_'
+     while (seen_ble_devices.size() > MAX_BLE_DEVICES) {
+                                      ^~~~~~~~~~~~~~~
+                                      MAIN_BLEDEVICE_H_
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:2974:24: error: request for member 'erase' in 'seen_ble_devices', which is of non-class type 'int'
+       seen_ble_devices.erase(seen_ble_devices.begin());
+                        ^~~~~
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:2974:47: error: request for member 'begin' in 'seen_ble_devices', which is of non-class type 'int'
+       seen_ble_devices.erase(seen_ble_devices.begin());
+                                               ^~~~~
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:2977:49: error: request for member 'size' in 'seen_ble_devices', which is of non-class type 'int'
+     ble_stats.unique_devices = seen_ble_devices.size();
+                                                 ^~~~
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino: In function 'void ble_hunter_setup()':
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:2984:3: error: 'ble_stats' was not declared in this scope
+   ble_stats = BLEStats();
+   ^~~~~~~~~
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:2984:3: note: suggested alternative: 'setstate'
+   ble_stats = BLEStats();
+   ^~~~~~~~~
+   setstate
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:2984:15: error: 'BLEStats' was not declared in this scope
+   ble_stats = BLEStats();
+               ^~~~~~~~
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:2984:15: note: suggested alternative: 'BLEUtils'
+   ble_stats = BLEStats();
+               ^~~~~~~~
+               BLEUtils
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:2985:20: error: request for member 'clear' in 'seen_ble_devices', which is of non-class type 'int'
+   seen_ble_devices.clear();
+                    ^~~~~
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino: In function 'void ble_hunter_loop()':
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:3021:24: error: 'BLE_SCAN_TIME' was not declared in this scope
+     ble_scanner->start(BLE_SCAN_TIME, false); // Scan for BLE_SCAN_TIME seconds, don't restart
+                        ^~~~~~~~~~~~~
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:3021:24: note: suggested alternative: 'LC_TIME'
+     ble_scanner->start(BLE_SCAN_TIME, false); // Scan for BLE_SCAN_TIME seconds, don't restart
+                        ^~~~~~~~~~~~~
+                        LC_TIME
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:3030:35: error: 'ble_stats' was not declared in this scope
+   uint32_t cycle_elapsed = (now - ble_stats.last_reset_time) / 1000;
+                                   ^~~~~~~~~
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:3030:35: note: suggested alternative: 'setstate'
+   uint32_t cycle_elapsed = (now - ble_stats.last_reset_time) / 1000;
+                                   ^~~~~~~~~
+                                   setstate
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino: In function 'void ble_hunter_cleanup()':
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:3061:20: error: request for member 'clear' in 'seen_ble_devices', which is of non-class type 'int'
+   seen_ble_devices.clear();
+                    ^~~~~
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino: At global scope:
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:3069:1: error: 'PineAPHunterStats' does not name a type
+ PineAPHunterStats pineap_hunter_stats;
+ ^~~~~~~~~~~~~~~~~
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino: In function 'void pineap_hunter_setup()':
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:3075:3: error: 'pineap_hunter_stats' was not declared in this scope
+   pineap_hunter_stats = PineAPHunterStats();
+   ^~~~~~~~~~~~~~~~~~~
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:3075:3: note: suggested alternative: 'pineap_hunter_setup'
+   pineap_hunter_stats = PineAPHunterStats();
+   ^~~~~~~~~~~~~~~~~~~
+   pineap_hunter_setup
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:3075:25: error: 'PineAPHunterStats' was not declared in this scope
+   pineap_hunter_stats = PineAPHunterStats();
+                         ^~~~~~~~~~~~~~~~~
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino: In function 'void pineap_hunter_loop()':
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:3094:11: error: 'pineap_hunter_stats' was not declared in this scope
+   switch (pineap_hunter_stats.view_mode) {
+           ^~~~~~~~~~~~~~~~~~~
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:3094:11: note: suggested alternative: 'pineap_hunter_setup'
+   switch (pineap_hunter_stats.view_mode) {
+           ^~~~~~~~~~~~~~~~~~~
+           pineap_hunter_setup
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:3107:9: error: 'pineap_hunter_stats' was not declared in this scope
+     if (pineap_hunter_stats.list_changed || (millis() - last_display_update > 1000)) {
+         ^~~~~~~~~~~~~~~~~~~
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:3107:9: note: suggested alternative: 'pineap_hunter_setup'
+     if (pineap_hunter_stats.list_changed || (millis() - last_display_update > 1000)) {
+         ^~~~~~~~~~~~~~~~~~~
+         pineap_hunter_setup
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino: In function 'void handle_main_list_input()':
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:3117:8: error: 'pineap_hunter_stats' was not declared in this scope
+   if (!pineap_hunter_stats.detected_pineaps.empty() &&
+        ^~~~~~~~~~~~~~~~~~~
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:3117:8: note: suggested alternative: 'pineap_hunter_setup'
+   if (!pineap_hunter_stats.detected_pineaps.empty() &&
+        ^~~~~~~~~~~~~~~~~~~
+        pineap_hunter_setup
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:3125:23: error: 'pineap_hunter_stats' was not declared in this scope
+     int total_items = pineap_hunter_stats.detected_pineaps.size() + 1;
+                       ^~~~~~~~~~~~~~~~~~~
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:3125:23: note: suggested alternative: 'pineap_hunter_setup'
+     int total_items = pineap_hunter_stats.detected_pineaps.size() + 1;
+                       ^~~~~~~~~~~~~~~~~~~
+                       pineap_hunter_setup
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:3139:19: error: 'pineap_hunter_stats' was not declared in this scope
+     if (cursor >= pineap_hunter_stats.detected_pineaps.size()) {
+                   ^~~~~~~~~~~~~~~~~~~
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:3139:19: note: suggested alternative: 'pineap_hunter_setup'
+     if (cursor >= pineap_hunter_stats.detected_pineaps.size()) {
+                   ^~~~~~~~~~~~~~~~~~~
+                   pineap_hunter_setup
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino: In function 'void handle_bssid_details_input()':
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:3158:5: error: 'pineap_hunter_stats' was not declared in this scope
+     pineap_hunter_stats.view_mode = 2; // Go to SSID list
+     ^~~~~~~~~~~~~~~~~~~
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:3158:5: note: suggested alternative: 'pineap_hunter_setup'
+     pineap_hunter_stats.view_mode = 2; // Go to SSID list
+     ^~~~~~~~~~~~~~~~~~~
+     pineap_hunter_setup
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino: In function 'void handle_ssid_list_input()':
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:3167:9: error: 'pineap_hunter_stats' was not declared in this scope
+     if (pineap_hunter_stats.selected_bssid_index < pineap_hunter_stats.detected_pineaps.size()) {
+         ^~~~~~~~~~~~~~~~~~~
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:3167:9: note: suggested alternative: 'pineap_hunter_setup'
+     if (pineap_hunter_stats.selected_bssid_index < pineap_hunter_stats.detected_pineaps.size()) {
+         ^~~~~~~~~~~~~~~~~~~
+         pineap_hunter_setup
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:3185:5: error: 'pineap_hunter_stats' was not declared in this scope
+     pineap_hunter_stats.view_mode = 0;
+     ^~~~~~~~~~~~~~~~~~~
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:3185:5: note: suggested alternative: 'pineap_hunter_setup'
+     pineap_hunter_stats.view_mode = 0;
+     ^~~~~~~~~~~~~~~~~~~
+     pineap_hunter_setup
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino: In function 'void scan_and_analyze()':
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:3216:7: error: 'pineap_hunter_stats' was not declared in this scope
+       pineap_hunter_stats.total_scans++;
+       ^~~~~~~~~~~~~~~~~~~
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:3216:7: note: suggested alternative: 'pineap_hunter_setup'
+       pineap_hunter_stats.total_scans++;
+       ^~~~~~~~~~~~~~~~~~~
+       pineap_hunter_setup
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:3225:27: error: 'SSIDRecord' was not declared in this scope
+         const std::vector<SSIDRecord>& ssids = entry.second;
+                           ^~~~~~~~~~
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:3225:37: error: template argument 1 is invalid
+         const std::vector<SSIDRecord>& ssids = entry.second;
+                                     ^
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:3225:37: error: template argument 2 is invalid
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:3226:68: error: request for member 'size' in 'ssids', which is of non-class type 'const int'
+         Serial.printf("BSSID %s: %d SSIDs\n", bssid.c_str(), ssids.size());
+                                                                    ^~~~
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:3227:38: error: request for member 'size' in 'ssids', which is of non-class type 'const int'
+         for (size_t i = 0; i < ssids.size(); i++) {
+                                      ^~~~
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:3229:35: error: invalid types 'const int[size_t {aka unsigned int}]' for array subscript
+                         i, ssids[i].essid.c_str(), ssids[i].rssi, ssids[i].last_seen);
+                                   ^
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:3229:59: error: invalid types 'const int[size_t {aka unsigned int}]' for array subscript
+                         i, ssids[i].essid.c_str(), ssids[i].rssi, ssids[i].last_seen);
+                                                           ^
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:3229:74: error: invalid types 'const int[size_t {aka unsigned int}]' for array subscript
+                         i, ssids[i].essid.c_str(), ssids[i].rssi, ssids[i].last_seen);
+                                                                          ^
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino: In function 'void add_scan_result(const String&, const String&, int32_t)':
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:3248:7: error: 'pineap_hunter_stats' was not declared in this scope
+   if (pineap_hunter_stats.scan_buffer.find(bssid_str) == pineap_hunter_stats.scan_buffer.end()) {
+       ^~~~~~~~~~~~~~~~~~~
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:3248:7: note: suggested alternative: 'pineap_hunter_setup'
+   if (pineap_hunter_stats.scan_buffer.find(bssid_str) == pineap_hunter_stats.scan_buffer.end()) {
+       ^~~~~~~~~~~~~~~~~~~
+       pineap_hunter_setup
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:3249:62: error: 'SSIDRecord' was not declared in this scope
+     pineap_hunter_stats.scan_buffer[bssid_str] = std::vector<SSIDRecord>();
+                                                              ^~~~~~~~~~
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:3249:72: error: template argument 1 is invalid
+     pineap_hunter_stats.scan_buffer[bssid_str] = std::vector<SSIDRecord>();
+                                                                        ^
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:3249:72: error: template argument 2 is invalid
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:3253:22: error: 'pineap_hunter_stats' was not declared in this scope
+   auto& essid_list = pineap_hunter_stats.scan_buffer[bssid_str];
+                      ^~~~~~~~~~~~~~~~~~~
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:3253:22: note: suggested alternative: 'pineap_hunter_setup'
+   auto& essid_list = pineap_hunter_stats.scan_buffer[bssid_str];
+                      ^~~~~~~~~~~~~~~~~~~
+                      pineap_hunter_setup
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:3255:32: error: unable to deduce 'auto&&' from 'essid_list'
+   for (auto& existing_record : essid_list) {
+                                ^~~~~~~~~~
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:3266:26: error: 'SSIDRecord' was not declared in this scope
+     essid_list.push_back(SSIDRecord(essid, rssi));
+                          ^~~~~~~~~~
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino: In function 'void process_scan_results()':
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:3271:15: error: 'PineRecord' was not declared in this scope
+   std::vector<PineRecord> new_pineaps;
+               ^~~~~~~~~~
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:3271:25: error: template argument 1 is invalid
+   std::vector<PineRecord> new_pineaps;
+                         ^
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:3271:25: error: template argument 2 is invalid
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:3274:28: error: 'pineap_hunter_stats' was not declared in this scope
+   for (const auto& entry : pineap_hunter_stats.scan_buffer) {
+                            ^~~~~~~~~~~~~~~~~~~
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:3274:28: note: suggested alternative: 'pineap_hunter_setup'
+   for (const auto& entry : pineap_hunter_stats.scan_buffer) {
+                            ^~~~~~~~~~~~~~~~~~~
+                            pineap_hunter_setup
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:3276:23: error: 'SSIDRecord' was not declared in this scope
+     const std::vector<SSIDRecord>& ssid_records = entry.second;
+                       ^~~~~~~~~~
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:3276:33: error: template argument 1 is invalid
+     const std::vector<SSIDRecord>& ssid_records = entry.second;
+                                 ^
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:3276:33: error: template argument 2 is invalid
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:3278:22: error: request for member 'size' in 'ssid_records', which is of non-class type 'const int'
+     if (ssid_records.size() >= ph_alert_ssids) {  // Use SSIDRecord vector size
+                      ^~~~
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:3279:17: error: expected ';' before 'pine'
+       PineRecord pine;
+                 ^~~~~
+                 ;
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:3280:34: error: 'pine' was not declared in this scope
+       string_to_bssid(bssid_str, pine.bssid);
+                                  ^~~~
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:3280:34: note: suggested alternative: 'pipe'
+       string_to_bssid(bssid_str, pine.bssid);
+                                  ^~~~
+                                  pipe
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:3286:18: error: 'SSIDRecord' does not name a type
+         [](const SSIDRecord& a, const SSIDRecord& b) {
+                  ^~~~~~~~~~
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino: In lambda function:
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:3288:11: error: expected '{' before ';' token
+         });
+           ^
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino: In function 'void process_scan_results()':
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:3288:11: error: expected ')' before ';' token
+         });
+           ^
+           )
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:3285:16: note: to match this '('
+       std::sort(pine.essids.begin(), pine.essids.end(),
+                ^
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:3290:19: error: request for member 'push_back' in 'new_pineaps', which is of non-class type 'int'
+       new_pineaps.push_back(pine);
+                   ^~~~~~~~~
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:3295:19: error: request for member 'size' in 'new_pineaps', which is of non-class type 'int'
+   if (new_pineaps.size() != pineap_hunter_stats.detected_pineaps.size()) {
+                   ^~~~
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:3295:29: error: 'pineap_hunter_stats' was not declared in this scope
+   if (new_pineaps.size() != pineap_hunter_stats.detected_pineaps.size()) {
+                             ^~~~~~~~~~~~~~~~~~~
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:3295:29: note: suggested alternative: 'pineap_hunter_setup'
+   if (new_pineaps.size() != pineap_hunter_stats.detected_pineaps.size()) {
+                             ^~~~~~~~~~~~~~~~~~~
+                             pineap_hunter_setup
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:3299:40: error: request for member 'size' in 'new_pineaps', which is of non-class type 'int'
+     for (size_t i = 0; i < new_pineaps.size(); i++) {
+                                        ^~~~
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:3301:43: error: invalid types 'int[size_t {aka unsigned int}]' for array subscript
+       const auto& new_pine = new_pineaps[i];
+                                           ^
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:3312:3: error: 'pineap_hunter_stats' was not declared in this scope
+   pineap_hunter_stats.detected_pineaps = new_pineaps;
+   ^~~~~~~~~~~~~~~~~~~
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:3312:3: note: suggested alternative: 'pineap_hunter_setup'
+   pineap_hunter_stats.detected_pineaps = new_pineaps;
+   ^~~~~~~~~~~~~~~~~~~
+   pineap_hunter_setup
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino: In function 'void maintain_buffer_size()':
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:3317:7: error: 'pineap_hunter_stats' was not declared in this scope
+   if (pineap_hunter_stats.scan_buffer.size() > 50) {
+       ^~~~~~~~~~~~~~~~~~~
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:3317:7: note: suggested alternative: 'pineap_hunter_setup'
+   if (pineap_hunter_stats.scan_buffer.size() > 50) {
+       ^~~~~~~~~~~~~~~~~~~
+       pineap_hunter_setup
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino: In function 'void update_display()':
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:3335:11: error: 'pineap_hunter_stats' was not declared in this scope
+   switch (pineap_hunter_stats.view_mode) {
+           ^~~~~~~~~~~~~~~~~~~
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:3335:11: note: suggested alternative: 'pineap_hunter_setup'
+   switch (pineap_hunter_stats.view_mode) {
+           ^~~~~~~~~~~~~~~~~~~
+           pineap_hunter_setup
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino: In function 'void draw_main_list()':
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:3344:23: error: 'pineap_hunter_stats' was not declared in this scope
+   int total_pineaps = pineap_hunter_stats.detected_pineaps.size();
+                       ^~~~~~~~~~~~~~~~~~~
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:3344:23: note: suggested alternative: 'pineap_hunter_setup'
+   int total_pineaps = pineap_hunter_stats.detected_pineaps.size();
+                       ^~~~~~~~~~~~~~~~~~~
+                       pineap_hunter_setup
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino: In function 'void draw_ssid_list()':
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:3401:7: error: 'pineap_hunter_stats' was not declared in this scope
+   if (pineap_hunter_stats.selected_bssid_index >= pineap_hunter_stats.detected_pineaps.size()) {
+       ^~~~~~~~~~~~~~~~~~~
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:3401:7: note: suggested alternative: 'pineap_hunter_setup'
+   if (pineap_hunter_stats.selected_bssid_index >= pineap_hunter_stats.detected_pineaps.size()) {
+       ^~~~~~~~~~~~~~~~~~~
+       pineap_hunter_setup
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:3406:22: error: 'pineap_hunter_stats' was not declared in this scope
+   const auto& pine = pineap_hunter_stats.detected_pineaps[pineap_hunter_stats.selected_bssid_index];
+                      ^~~~~~~~~~~~~~~~~~~
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:3406:22: note: suggested alternative: 'pineap_hunter_setup'
+   const auto& pine = pineap_hunter_stats.detected_pineaps[pineap_hunter_stats.selected_bssid_index];
+                      ^~~~~~~~~~~~~~~~~~~
+                      pineap_hunter_setup
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino: In function 'void pineap_hunter_cleanup()':
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:3451:3: error: 'pineap_hunter_stats' was not declared in this scope
+   pineap_hunter_stats.scan_buffer.clear();
+   ^~~~~~~~~~~~~~~~~~~
+/home/runner/work/nemo_bridge/nemo_bridge/nemo_bridge.ino:3451:3: note: suggested alternative: 'pineap_hunter_setup'
+   pineap_hunter_stats.scan_buffer.clear();
+   ^~~~~~~~~~~~~~~~~~~
+   pineap_hunter_setup
+
+Error during build: exit status 1

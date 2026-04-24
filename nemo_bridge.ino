@@ -2534,11 +2534,11 @@ ProcessHandler processes[] = {
 #if defined(CARDPUTER)
   // {27, badusb_hunter_setup, badusb_hunter_loop, "BadUSB Hunter"},
 #endif
-  {29, bh_rssi_setup, bh_rssi_loop, "BH RSSI Setting"},
-  {30, dh_rssi_setup, dh_rssi_loop, "DH RSSI Setting"}, 
-  {31, bh_alert_pkts_setup, bh_alert_pkts_loop, "BH Alert Pkts Setting"},
-  {32, dh_alert_pkts_setup, dh_alert_pkts_loop, "DH Alert Pkts Setting"},
-  {33, ph_alert_ssids_setup, ph_alert_ssids_loop, TXT_PH_ALERT_SSIDS},
+  // {29, bh_rssi_setup, bh_rssi_loop, "BH RSSI Setting"},
+  // {30, dh_rssi_setup, dh_rssi_loop, "DH RSSI Setting"}, 
+  // {31, bh_alert_pkts_setup, bh_alert_pkts_loop, "BH Alert Pkts Setting"},
+  // {32, dh_alert_pkts_setup, dh_alert_pkts_loop, "DH Alert Pkts Setting"},
+  // {33, ph_alert_ssids_setup, ph_alert_ssids_loop, TXT_PH_ALERT_SSIDS},
 #if defined(SDCARD) && !defined(CARDPUTER)
   {97, nullptr, ToggleSDCard, "SD Card"},
 #endif
