@@ -104,7 +104,7 @@ void tg_poll() {
 
 void telegram_bridge_setup() {
   tg_client.setInsecure(); // Simple SSL
-  tg_client.setBufferSizes(512, 512); // REDUCE RAM USAGE
+  tg_client.setHandshakeTimeout(30); // 30s timeout for slow chips
   Serial.println("\n--- TELEGRAM BRIDGE STARTUP ---");
   Serial.print("[TG] Target SSID: "); Serial.println(TG_SSID);
   
