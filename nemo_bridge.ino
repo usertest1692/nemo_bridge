@@ -1779,7 +1779,7 @@ void aj_adv(){
       packet[i++] = 0x00;  // ???
       packet[i++] =  0x10;  // Type ???
       esp_fill_random(&packet[i], 3);
-      oAdvertisementData.addData(String((char *)packet, 17));
+      oAdvertisementData.addData(std::string((char *)packet, 17));
       for (int i = 0; i < sizeof packet; i ++) {
         Serial.printf("%02x", packet[i]);
       }
@@ -1807,7 +1807,7 @@ void aj_adv(){
       Serial.println("");
 
       i += display_name_len;  
-      oAdvertisementData.addData(String((char *)packet, size));
+      oAdvertisementData.addData(std::string((char *)packet, size));
       free(packet);
       free((void*)display_name);
     } else if (androidPair) {
@@ -1830,7 +1830,7 @@ void aj_adv(){
       packet[i++] = 0x0A; // AD Type (Tx Power Level)
       packet[i++] = (rand() % 120) - 100; // -100 to +20 dBm
 
-      oAdvertisementData.addData(String((char *)packet, 14));
+      oAdvertisementData.addData(std::string((char *)packet, 14));
       for (int i = 0; i < sizeof packet; i ++) {
         Serial.printf("%02x", packet[i]);
       }
@@ -1838,9 +1838,9 @@ void aj_adv(){
     } else {
       Serial.print(TXT_AJ_ADV);
       if (deviceType >= 18){
-        oAdvertisementData.addData(String((char*)data, sizeof(AppleTVPair)));
+        oAdvertisementData.addData(std::string((char*)data, sizeof(AppleTVPair)));
       } else {
-        oAdvertisementData.addData(String((char*)data, sizeof(Airpods)));
+        oAdvertisementData.addData(std::string((char*)data, sizeof(Airpods)));
       }
       for (int i = 0; i < sizeof(Airpods); i ++) {
         Serial.printf("%02x", data[i]);
