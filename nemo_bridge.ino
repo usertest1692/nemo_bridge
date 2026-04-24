@@ -306,6 +306,7 @@ int dh_pkts = 0;
   #define EEPROM_SIZE 64
 #endif
 #include <IRremote.h>
+#include <DNSServer.h>
 #include <WebServer.h>
 #include "telegram_bridge.h"
 #define USE_TELEGRAM
