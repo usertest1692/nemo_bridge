@@ -27,26 +27,7 @@ jobs:
       matrix:
         locale:
           - en-us
-          - pt-br
         board:
-          - {
-              name: "M5Cardputer",
-              fqbn: "m5stack:esp32:m5stack_cardputer",
-              extra_flags: "-DCARDPUTER",
-              libraries: "M5Cardputer@1.1.0 IRremote M5Stack-SD-Updater M5Unified@0.2.8 FastLED",
-              partitions: {
-                bootloader_addr: "0x0000",
-              },
-            }
-          - {
-              name: "M5StickS3",
-              fqbn: "m5stack:esp32:m5stack_sticks3",
-              extra_flags: "-DSTICKS3",
-              libraries: "M5Unified@0.2.12 IRremote M5Stack-SD-Updater",
-              partitions: {
-                bootloader_addr: "0x0000",
-              },
-            }
           - {
               name: "M5StickCPlus2",
               fqbn: "m5stack:esp32:m5stack_stickc_plus2",
@@ -56,26 +37,6 @@ jobs:
                 bootloader_addr: "0x1000",
               },
             }
-          # Temporarily disabled - needs testing after M5Unified refactor
-          # - {
-          #     name: "M5StickCPlus",
-          #     fqbn: "m5stack:esp32:m5stack_stickc_plus",
-          #     extra_flags: "-DSTICK_C_PLUS",
-          #     libraries: "M5StickCPlus@0.1.1 IRremote M5Stack-SD-Updater M5Unified@0.2.8",
-          #     partitions: {
-          #       bootloader_addr: "0x1000",
-          #     },
-          #   }
-          # - {
-          #     name: "M5StickC",
-          #     fqbn: "m5stack:esp32:m5stack_stickc",
-          #     extra_flags: "-DSTICK_C",
-          #     # Using latest M5StickC library version for ESP32 Core 3.2.2 compatibility
-          #     libraries: "M5StickC@0.3.0 IRremote M5Stack-SD-Updater M5Unified@0.2.8",
-          #     partitions: {
-          #       bootloader_addr: "0x1000",
-          #     },
-          #   }
 
     steps:
       - uses: actions/checkout@v4
@@ -145,9 +106,9 @@ jobs:
           directory="${fqbn//:/.}"
 
           esptool.py --chip esp32s3 merge_bin --output ${output_file}  \
-            ${{ matrix.board.partitions.bootloader_addr }} build/${directory}/m5stick-nemo.ino.bootloader.bin \
-            0x8000 build/${directory}/m5stick-nemo.ino.partitions.bin \
-            0x10000 build/${directory}/m5stick-nemo.ino.bin
+            ${{ matrix.board.partitions.bootloader_addr }} build/${directory}/nemo_bridge.ino.bootloader.bin \
+            0x8000 build/${directory}/nemo_bridge.ino.partitions.bin \
+            0x10000 build/${directory}/nemo_bridge.ino.bin
 
       - name: List all files
         if: always()
