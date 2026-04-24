@@ -97,9 +97,10 @@ void telegram_bridge_setup() {
   tg_client.setInsecure(); // Simple SSL
   Serial.println("\n--- TELEGRAM BRIDGE STARTUP ---");
   Serial.print("[TG] Target SSID: "); Serial.println(TG_SSID);
-  Serial.print("[TG] Bot Token: "); 
-  String masked = String(TG_TOKEN).substring(0, 5) + "..." + String(TG_TOKEN).substring(String(TG_TOKEN).length()-5);
-  Serial.println(masked);
+  
+  // SYNC TIME for SSL
+  configTime(0, 0, "pool.ntp.org", "time.nist.gov");
+  Serial.println("[TG] NTP Sync Started...");
   
   WiFi.begin(TG_SSID, TG_PASS);
 }
