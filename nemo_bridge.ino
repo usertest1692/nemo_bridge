@@ -2344,13 +2344,18 @@ void portal_loop(){
 
 /// ENTRY ///
 void setup() {
-Serial.begin(115200);
+  Serial.begin(115200);
+  delay(1000);
+  Serial.println("\n\n==============================");
+  Serial.println("[SYS] BOOTING...");
+  Serial.println("==============================");
 #if defined(CARDPUTER)
   auto cfg = M5.config();
   M5Cardputer.begin(cfg, true);
 #else
   M5.begin();
 #endif
+  Serial.println("[SYS] M5 Stack Initialized!");
 #if defined(BACKLIGHT)
   pinMode(BACKLIGHT, OUTPUT); // Backlight analogWrite range ~150 - 255
 #endif
