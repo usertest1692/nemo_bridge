@@ -42,7 +42,7 @@ uint16_t FGCOLOR=0xFFF1; // placeholder
   #define SMALL_TEXT 2
   #define TINY_TEXT 1
   // -=-=- FEATURES -=-=-
-  #define M5LED 19  // PLUS2 SHELL FIX: Pin 19
+  #define M5LED 10
   #define RTC
   #define AXP
   #define ACTIVE_LOW_IR
@@ -53,7 +53,7 @@ uint16_t FGCOLOR=0xFFF1; // placeholder
 
   // -=-=- ALIASES -=-=-
   #define DISP M5.Display
-  #define IRLED 9 // HYBRID FIX: PICO chip usually uses Pin 9 for IR
+  #define IRLED 9
   #define SPEAKER M5.Speaker
   //#define BITMAP M5.Display.drawBitmap(0, 0, 320, 240, NEMOMatrix) // This doesn't work, generates static.
   #define BITMAP Serial.println("unsupported")
@@ -64,8 +64,8 @@ uint16_t FGCOLOR=0xFFF1; // placeholder
   #define SD_MISO_PIN 36
   #define SD_MOSI_PIN 26
   #define SD_CS_PIN -1 //can be 14, to avoid serial messages
-  #define M5LED_ON HIGH // PLUS2 SHELL FIX
-  #define M5LED_OFF LOW // PLUS2 SHELL FIX
+  #define M5LED_ON LOW
+  #define M5LED_OFF HIGH
 #endif
 
 #if defined(STICK_C_PLUS2)

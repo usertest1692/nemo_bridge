@@ -62,6 +62,10 @@ void tg_process_command(String cmd) {
     status += "RSSI: " + String(WiFi.RSSI()) + " dBm\n";
     status += "Uptime: " + String(millis() / 60000) + " min";
     tg_send_message(status);
+  } else if (cmd == "/region") {
+    extern int region;
+    region = (region == 0) ? 1 : 0;
+    tg_send_message("TV Region switched to: " + String(region == 0 ? "North America" : "Europe/Asia"));
   } else if (cmd == "/reboot") {
     tg_send_message("Rebooting device...");
     delay(1000);
@@ -100,6 +104,7 @@ void tg_poll() {
 
 void telegram_bridge_setup() {
   tg_client.setInsecure(); // Simple SSL
+  tg_client.setBufferSizes(512, 512); // REDUCE RAM USAGE
   Serial.println("\n--- TELEGRAM BRIDGE STARTUP ---");
   Serial.print("[TG] Target SSID: "); Serial.println(TG_SSID);
   
@@ -112,6 +117,7 @@ void telegram_bridge_setup() {
 
 void telegram_bridge_loop() {
   static bool wasConnected = false;
+  static bool rtcSynced = false;
   static unsigned long lastDebug = 0;
   
   if (millis() - lastDebug > 5000) {
@@ -119,14 +125,11 @@ void telegram_bridge_loop() {
     int status = WiFi.status();
     Serial.print("[TG] WiFi Status: ");
     Serial.print(status);
-    switch(status) {
-      case WL_CONNECTED: 
-        Serial.print(" (CONNECTED) RSSI: "); 
-        Serial.println(WiFi.RSSI());
-        break;
-      case WL_NO_SSID_AVAIL: Serial.println(" (SSID NOT FOUND)"); break;
-      case WL_CONNECT_FAILED: Serial.println(" (AUTH FAILED)"); break;
-      default: Serial.println(" (Connecting...)"); break;
+    if (status == WL_CONNECTED) {
+      Serial.print(" (CONNECTED) RSSI: "); 
+      Serial.println(WiFi.RSSI());
+    } else {
+      Serial.println(" (Connecting...)");
     }
   }
 
@@ -142,6 +145,13 @@ void telegram_bridge_loop() {
       if (getLocalTime(&timeinfo)) {
         Serial.print("[TG] Time Sync OK: ");
         Serial.println(&timeinfo, "%A, %B %d %Y %H:%M:%S");
+        
+        // FORCE RTC SYNC
+        if (!rtcSynced) {
+          M5.Rtc.setDateTime(&timeinfo);
+          rtcSynced = true;
+          Serial.println("[TG] Internal RTC Synced to NTP!");
+        }
       }
       
       tg_send_message("M5Stick Hybrid is ONLINE! 🚀\nIP: " + WiFi.localIP().toString());
