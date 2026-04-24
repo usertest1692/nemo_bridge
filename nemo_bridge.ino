@@ -411,17 +411,32 @@ void check_menu_press() {
 #if defined(AXP)
   M5.update();
   if (M5.Power.getKeyState()) {
-#endif
-#if defined(KB)
-  if (M5Cardputer.Keyboard.isKeyPressed(',') || M5Cardputer.Keyboard.isKeyPressed('`')){
-#endif
-#if defined(M5_BUTTON_MENU) && !defined(STICKS3)
-  if (digitalRead(M5_BUTTON_MENU) == LOW){
-#endif
-#if defined(AXP) || defined(KB) || (defined(M5_BUTTON_MENU) && !defined(STICKS3))
     dimtimer();
     if(portal_active){
-      // just in case we escape the portal with the main menu button
+      shutdownWebServer();
+      portal_active = false;
+    }
+    isSwitching = true;
+    rstOverride = false;
+    current_proc = 1;
+    delay(100);
+  }
+#elif defined(KB)
+  if (M5Cardputer.Keyboard.isKeyPressed(',') || M5Cardputer.Keyboard.isKeyPressed('`')){
+    dimtimer();
+    if(portal_active){
+      shutdownWebServer();
+      portal_active = false;
+    }
+    isSwitching = true;
+    rstOverride = false;
+    current_proc = 1;
+    delay(100);
+  }
+#elif defined(M5_BUTTON_MENU) && !defined(STICKS3)
+  if (digitalRead(M5_BUTTON_MENU) == LOW){
+    dimtimer();
+    if(portal_active){
       shutdownWebServer();
       portal_active = false;
     }
