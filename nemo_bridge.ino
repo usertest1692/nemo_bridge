@@ -315,18 +315,12 @@ int dh_pkts = 0;
 #include "wifispam.h"
 #include "sd.h"
 #include "portal.h"
-#include "NEMOMatrix.h"
 #include "songs.h"
 #include "localization.h"
 #include <BLEUtils.h>
 #include <BLEServer.h>
+#include "telegram_bridge.h"
 
-#include "deauth_hunter.h"                                                          //DEAUTH HUNTER
-#include "ble_hunter.h"                                                             //BLE HUNTER
-#include "pineap_hunter.h"                                                          //PINEAP HUNTER
-#if defined(CARDPUTER)
-#include "badusb_hunter.h"                                                          //BADUSB HUNTER
-#endif
 struct MENU {
   char name[19];
   int command;
@@ -2446,6 +2440,12 @@ Serial.begin(115200);
   DISP.setTextColor(FGCOLOR, BGCOLOR);
   bootScreen();
   
+  // IR & LED PIN SETUP
+  pinMode(9, OUTPUT);
+  pinMode(10, OUTPUT);
+  digitalWrite(9, LOW);
+  digitalWrite(10, HIGH); // RED LED OFF (HIGH is OFF for Plus2)
+  
   // RESTORE TELEGRAM
   telegram_bridge_setup();
   
@@ -2547,6 +2547,7 @@ void loop() {
   switcher_button_proc();
   screen_dim_proc();
   check_menu_press();
+  telegram_bridge_loop();
   
   // Switcher - unified process handler
   if (isSwitching) {
