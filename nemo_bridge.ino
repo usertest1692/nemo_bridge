@@ -2,7 +2,7 @@
 // github.com/n0xa | IG: @4x0nn
 
 // -=-=-=-=-=-=- Uncomment the platform you're building for -=-=-=-=-=-=-
-#define STICK_C_PLUS
+// #define STICK_C_PLUS
 // #define STICK_C_PLUS2
 // #define STICKS3
 // #define STICK_C
@@ -53,10 +53,7 @@ uint16_t FGCOLOR=0xFFF1; // placeholder
 
   // -=-=- ALIASES -=-=-
   #define DISP M5.Display
-  #define IRLED 9  // Primary IR
-  #define IRLED2 19 // Alternative IR (Plus2 Shell)
-  #define IRLED3 26 // Alternative IR (Unit Shell)
-  
+  #define IRLED 9
   #define SPEAKER M5.Speaker
   //#define BITMAP M5.Display.drawBitmap(0, 0, 320, 240, NEMOMatrix) // This doesn't work, generates static.
   #define BITMAP Serial.println("unsupported")
@@ -81,16 +78,18 @@ uint16_t FGCOLOR=0xFFF1; // placeholder
   #define TINY_TEXT 1
   // -=-=- FEATURES -=-=-
   #define ACTIVE_LOW_IR
-  #define M5LED 10  // HYBRID FIX: Using original Plus Pin 10
+  #define M5LED 19
   #define ROTATION
   #define USE_EEPROM
-  #define RTC      
+  #define RTC      //TODO: plus2 has a BM8563 RTC but the class isn't the same, needs work.
+  // #define SDCARD   //Requires a custom-built adapter
   #define PWRMGMT
   #define SPEAKER M5.Speaker
+  //#define SONG
   // -=-=- ALIASES -=-=-
   #define DISP M5.Display
-  #define IRLED 9   // HYBRID FIX: Using original Plus Pin 9
-  #define BITMAP Serial.println("unsupported")
+  #define IRLED 19
+  #define BITMAP M5.Display.drawBmp(NEMOMatrix, 97338)
   #define M5_BUTTON_MENU 35
   #define M5_BUTTON_HOME 37
   #define M5_BUTTON_RST 39
@@ -99,9 +98,9 @@ uint16_t FGCOLOR=0xFFF1; // placeholder
   #define SD_CLK_PIN 0
   #define SD_MISO_PIN 36
   #define SD_MOSI_PIN 26
-  #define SD_CS_PIN 14 
-  #define M5LED_ON LOW  // HYBRID FIX: Active Low
-  #define M5LED_OFF HIGH // HYBRID FIX: Active High
+  #define SD_CS_PIN 14 //can be -1, but sends a lot of messages of error in serial monitor
+  #define M5LED_ON HIGH
+  #define M5LED_OFF LOW
 #endif
 
 #if defined(STICKS3)
@@ -124,7 +123,7 @@ uint16_t FGCOLOR=0xFFF1; // placeholder
   // -=-=- ALIASES -=-=-
   #define DISP M5.Display
   #define IRLED 46
-  #define BITMAP Serial.println("unsupported")
+  #define BITMAP M5.Display.drawBmp(NEMOMatrix, 97338)
   #define M5_BUTTON_MENU 12  // KEY2 per device diagram
   #define M5_BUTTON_HOME 11  // KEY1 (main front button)
   #define M5_BUTTON_RST -1   // GPIO 0 not usable on StickS3 (power/boot pin)
@@ -191,7 +190,7 @@ uint16_t FGCOLOR=0xFFF1; // placeholder
   #define BACKLIGHT 38
   #define MINBRIGHT 165
   #define SPEAKER M5Cardputer.Speaker
-  #define BITMAP Serial.println("unsupported")
+  #define BITMAP M5Cardputer.Display.drawBmp(NEMOMatrix, 97338)
   #define SD_CLK_PIN 40
   #define SD_MISO_PIN 39
   #define SD_MOSI_PIN 14
@@ -311,18 +310,23 @@ int dh_pkts = 0;
 #include <IRremote.h>
 #include <DNSServer.h>
 #include <WebServer.h>
-#include "telegram_bridge.h"
-#define USE_TELEGRAM
 #include "applejuice.h"
 #include "WORLD_IR_CODES.h"
 #include "wifispam.h"
 #include "sd.h"
 #include "portal.h"
+#include "NEMOMatrix.h"
 #include "songs.h"
 #include "localization.h"
 #include <BLEUtils.h>
 #include <BLEServer.h>
 
+#include "deauth_hunter.h"                                                          //DEAUTH HUNTER
+#include "ble_hunter.h"                                                             //BLE HUNTER
+#include "pineap_hunter.h"                                                          //PINEAP HUNTER
+#if defined(CARDPUTER)
+#include "badusb_hunter.h"                                                          //BADUSB HUNTER
+#endif
 struct MENU {
   char name[19];
   int command;
@@ -409,32 +413,17 @@ void check_menu_press() {
 #if defined(AXP)
   M5.update();
   if (M5.Power.getKeyState()) {
-    dimtimer();
-    if(portal_active){
-      shutdownWebServer();
-      portal_active = false;
-    }
-    isSwitching = true;
-    rstOverride = false;
-    current_proc = 1;
-    delay(100);
-  }
-#elif defined(KB)
+#endif
+#if defined(KB)
   if (M5Cardputer.Keyboard.isKeyPressed(',') || M5Cardputer.Keyboard.isKeyPressed('`')){
-    dimtimer();
-    if(portal_active){
-      shutdownWebServer();
-      portal_active = false;
-    }
-    isSwitching = true;
-    rstOverride = false;
-    current_proc = 1;
-    delay(100);
-  }
-#elif defined(M5_BUTTON_MENU) && !defined(STICKS3)
+#endif
+#if defined(M5_BUTTON_MENU) && !defined(STICKS3)
   if (digitalRead(M5_BUTTON_MENU) == LOW){
+#endif
+#if defined(AXP) || defined(KB) || (defined(M5_BUTTON_MENU) && !defined(STICKS3))
     dimtimer();
     if(portal_active){
+      // just in case we escape the portal with the main menu button
       shutdownWebServer();
       portal_active = false;
     }
@@ -1338,16 +1327,14 @@ void sendAllCodes() {
       rawData[k * 2] = offtime * 10;
       rawData[(k * 2) + 1] = ontime * 10;
     }
+    
+    // VISUAL FEEDBACK (Red LED)
+    digitalWrite(M5LED, M5LED_ON);
+    
     IrSender.setSendPin(IRLED);
     IrSender.sendRaw(rawData, (numpairs * 2), freq);
-#ifdef IRLED2
-    IrSender.setSendPin(IRLED2);
-    IrSender.sendRaw(rawData, (numpairs * 2), freq);
-#endif
-#ifdef IRLED3
-    IrSender.setSendPin(IRLED3);
-    IrSender.sendRaw(rawData, (numpairs * 2), freq);
-#endif
+    
+    digitalWrite(M5LED, M5LED_OFF);
     digitalWrite(IRLED, M5LED_OFF);
     bitsleft_r = 0;
     delay_ten_us(20500);
@@ -1792,7 +1779,7 @@ void aj_adv(){
       packet[i++] = 0x00;  // ???
       packet[i++] =  0x10;  // Type ???
       esp_fill_random(&packet[i], 3);
-      oAdvertisementData.addData(std::string((char *)packet, 17));
+      oAdvertisementData.addData(String((char *)packet, 17));
       for (int i = 0; i < sizeof packet; i ++) {
         Serial.printf("%02x", packet[i]);
       }
@@ -1820,7 +1807,7 @@ void aj_adv(){
       Serial.println("");
 
       i += display_name_len;  
-      oAdvertisementData.addData(std::string((char *)packet, size));
+      oAdvertisementData.addData(String((char *)packet, size));
       free(packet);
       free((void*)display_name);
     } else if (androidPair) {
@@ -1843,7 +1830,7 @@ void aj_adv(){
       packet[i++] = 0x0A; // AD Type (Tx Power Level)
       packet[i++] = (rand() % 120) - 100; // -100 to +20 dBm
 
-      oAdvertisementData.addData(std::string((char *)packet, 14));
+      oAdvertisementData.addData(String((char *)packet, 14));
       for (int i = 0; i < sizeof packet; i ++) {
         Serial.printf("%02x", packet[i]);
       }
@@ -1851,9 +1838,9 @@ void aj_adv(){
     } else {
       Serial.print(TXT_AJ_ADV);
       if (deviceType >= 18){
-        oAdvertisementData.addData(std::string((char*)data, sizeof(AppleTVPair)));
+        oAdvertisementData.addData(String((char*)data, sizeof(AppleTVPair)));
       } else {
-        oAdvertisementData.addData(std::string((char*)data, sizeof(Airpods)));
+        oAdvertisementData.addData(String((char*)data, sizeof(Airpods)));
       }
       for (int i = 0; i < sizeof(Airpods); i ++) {
         Serial.printf("%02x", data[i]);
@@ -2364,25 +2351,13 @@ void portal_loop(){
 
 /// ENTRY ///
 void setup() {
-  Serial.begin(115200);
-  delay(1000);
-  Serial.println("\n\n==============================");
-  Serial.println("[SYS] BOOTING...");
-  Serial.println("==============================");
+Serial.begin(115200);
 #if defined(CARDPUTER)
   auto cfg = M5.config();
   M5Cardputer.begin(cfg, true);
 #else
   M5.begin();
 #endif
-  Serial.println("[SYS] M5 Stack Initialized!");
-  Serial.print("[SYS] Detected Board: ");
-  Serial.println((int)M5.getBoard()); 
-  Serial.println("--- PIN CONFIGURATION ---");
-  Serial.print("[PIN] IR LED: "); Serial.println(IRLED);
-  Serial.print("[PIN] M5 LED: "); Serial.println(M5LED);
-  Serial.print("[PIN] LED ON: "); Serial.println(M5LED_ON == LOW ? "LOW" : "HIGH");
-  Serial.println("-------------------------");
 #if defined(BACKLIGHT)
   pinMode(BACKLIGHT, OUTPUT); // Backlight analogWrite range ~150 - 255
 #endif
@@ -2443,15 +2418,7 @@ void setup() {
 #endif
 #if defined(IRLED)
   pinMode(IRLED, OUTPUT);
-  digitalWrite(IRLED, M5LED_OFF); 
-#endif
-#if defined(IRLED2)
-  pinMode(IRLED2, OUTPUT);
-  digitalWrite(IRLED2, M5LED_OFF); 
-#endif
-#if defined(IRLED3)
-  pinMode(IRLED3, OUTPUT);
-  digitalWrite(IRLED3, M5LED_OFF); 
+  digitalWrite(IRLED, M5LED_OFF); //LEDOFF
 #endif
 #if !defined(KB)
   pinMode(M5_BUTTON_HOME, INPUT);
@@ -2472,9 +2439,6 @@ void setup() {
   // Nemo Portal Init
   setupSdCard();
   bootTime = lastActivity = millis();
-#ifdef USE_TELEGRAM
-  telegram_bridge_setup();
-#endif
 
   screenBrightness(brightness);
   dimtimer();
@@ -2528,17 +2492,17 @@ ProcessHandler processes[] = {
   {19, portal_setup, portal_loop, "Captive Portal"},
   {22, color_setup, color_loop, "Color Settings"},
   {23, theme_setup, theme_loop, "Theme Settings"},
-  // {24, deauth_hunter_setup, deauth_hunter_loop, "Deauth Hunter"},
-  // {25, ble_hunter_setup, ble_hunter_loop, "BLE Hunter"},
-  // {26, pineap_hunter_setup, pineap_hunter_loop, "PineAP Hunter"},
+  {24, deauth_hunter_setup, deauth_hunter_loop, "Deauth Hunter"},
+  {25, ble_hunter_setup, ble_hunter_loop, "BLE Hunter"},
+  {26, pineap_hunter_setup, pineap_hunter_loop, "PineAP Hunter"},
 #if defined(CARDPUTER)
-  // {27, badusb_hunter_setup, badusb_hunter_loop, "BadUSB Hunter"},
+  {27, badusb_hunter_setup, badusb_hunter_loop, "BadUSB Hunter"},
 #endif
-  // {29, bh_rssi_setup, bh_rssi_loop, "BH RSSI Setting"},
-  // {30, dh_rssi_setup, dh_rssi_loop, "DH RSSI Setting"}, 
-  // {31, bh_alert_pkts_setup, bh_alert_pkts_loop, "BH Alert Pkts Setting"},
-  // {32, dh_alert_pkts_setup, dh_alert_pkts_loop, "DH Alert Pkts Setting"},
-  // {33, ph_alert_ssids_setup, ph_alert_ssids_loop, TXT_PH_ALERT_SSIDS},
+  {29, bh_rssi_setup, bh_rssi_loop, "BH RSSI Setting"},
+  {30, dh_rssi_setup, dh_rssi_loop, "DH RSSI Setting"}, 
+  {31, bh_alert_pkts_setup, bh_alert_pkts_loop, "BH Alert Pkts Setting"},
+  {32, dh_alert_pkts_setup, dh_alert_pkts_loop, "DH Alert Pkts Setting"},
+  {33, ph_alert_ssids_setup, ph_alert_ssids_loop, TXT_PH_ALERT_SSIDS},
 #if defined(SDCARD) && !defined(CARDPUTER)
   {97, nullptr, ToggleSDCard, "SD Card"},
 #endif
@@ -2575,9 +2539,6 @@ void loop() {
   switcher_button_proc();
   screen_dim_proc();
   check_menu_press();
-#ifdef USE_TELEGRAM
-  telegram_bridge_loop();
-#endif
   
   // Switcher - unified process handler
   if (isSwitching) {
