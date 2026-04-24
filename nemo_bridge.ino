@@ -306,8 +306,9 @@ int dh_pkts = 0;
   #define EEPROM_SIZE 64
 #endif
 #include <IRremote.h>
-#include <DNSServer.h>
 #include <WebServer.h>
+#include "telegram_bridge.h"
+#define USE_TELEGRAM
 #include "applejuice.h"
 #include "WORLD_IR_CODES.h"
 #include "wifispam.h"
@@ -2457,6 +2458,9 @@ void setup() {
   // Nemo Portal Init
   setupSdCard();
   bootTime = lastActivity = millis();
+#ifdef USE_TELEGRAM
+  telegram_bridge_setup();
+#endif
 
   screenBrightness(brightness);
   dimtimer();
@@ -2557,6 +2561,9 @@ void loop() {
   switcher_button_proc();
   screen_dim_proc();
   check_menu_press();
+#ifdef USE_TELEGRAM
+  telegram_bridge_loop();
+#endif
   
   // Switcher - unified process handler
   if (isSwitching) {
