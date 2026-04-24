@@ -2356,6 +2356,8 @@ void setup() {
   M5.begin();
 #endif
   Serial.println("[SYS] M5 Stack Initialized!");
+  Serial.print("[SYS] Detected Board: ");
+  Serial.println((int)M5.getBoard()); 
 #if defined(BACKLIGHT)
   pinMode(BACKLIGHT, OUTPUT); // Backlight analogWrite range ~150 - 255
 #endif
