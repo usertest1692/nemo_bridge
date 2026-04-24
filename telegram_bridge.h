@@ -120,41 +120,21 @@ void telegram_bridge_loop() {
   static bool rtcSynced = false;
   static unsigned long lastDebug = 0;
   
-  if (millis() - lastDebug > 5000) {
-    lastDebug = millis();
-    int status = WiFi.status();
-    Serial.print("[TG] WiFi Status: ");
-    Serial.print(status);
-    if (status == WL_CONNECTED) {
-      Serial.print(" (CONNECTED) RSSI: "); 
-      Serial.println(WiFi.RSSI());
-    } else {
-      Serial.println(" (Connecting...)");
-    }
-  }
-
   if (WiFi.status() == WL_CONNECTED) {
     if (!wasConnected) {
       wasConnected = true;
       Serial.print("[TG] SUCCESS! IP: ");
       Serial.println(WiFi.localIP());
-      Serial.println("[TG] Waiting 5s for Time Sync...");
-      delay(5000); 
       
       struct tm timeinfo;
       if (getLocalTime(&timeinfo)) {
-        Serial.print("[TG] Time Sync OK: ");
-        Serial.println(&timeinfo, "%A, %B %d %Y %H:%M:%S");
-        
-        // FORCE RTC SYNC
         if (!rtcSynced) {
           M5.Rtc.setDateTime(&timeinfo);
           rtcSynced = true;
-          Serial.println("[TG] Internal RTC Synced to NTP!");
+          Serial.println("[TG] Time Synced & RTC Updated!");
+          tg_send_message("M5Stick Hybrid is ONLINE! 🚀\nTime: " + String(asctime(&timeinfo)));
         }
       }
-      
-      tg_send_message("M5Stick Hybrid is ONLINE! 🚀\nIP: " + WiFi.localIP().toString());
     }
     
     if (millis() - tg_last_poll > tg_poll_interval) {
@@ -163,6 +143,14 @@ void telegram_bridge_loop() {
     }
   } else {
     wasConnected = false;
+  }
+
+  // Debug every 10 seconds instead of 5
+  if (millis() - lastDebug > 10000) {
+    lastDebug = millis();
+    if (WiFi.status() == WL_CONNECTED) {
+      Serial.print("[TG] RSSI: "); Serial.println(WiFi.RSSI());
+    }
   }
 }
 

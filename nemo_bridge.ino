@@ -90,7 +90,7 @@ uint16_t FGCOLOR=0xFFF1; // placeholder
   // -=-=- ALIASES -=-=-
   #define DISP M5.Display
   #define IRLED 9   // HYBRID FIX: Using original Plus Pin 9
-  #define BITMAP M5.Display.drawBmp(NEMOMatrix, 97338)
+  #define BITMAP Serial.println("unsupported")
   #define M5_BUTTON_MENU 35
   #define M5_BUTTON_HOME 37
   #define M5_BUTTON_RST 39
@@ -124,7 +124,7 @@ uint16_t FGCOLOR=0xFFF1; // placeholder
   // -=-=- ALIASES -=-=-
   #define DISP M5.Display
   #define IRLED 46
-  #define BITMAP M5.Display.drawBmp(NEMOMatrix, 97338)
+  #define BITMAP Serial.println("unsupported")
   #define M5_BUTTON_MENU 12  // KEY2 per device diagram
   #define M5_BUTTON_HOME 11  // KEY1 (main front button)
   #define M5_BUTTON_RST -1   // GPIO 0 not usable on StickS3 (power/boot pin)
@@ -191,7 +191,7 @@ uint16_t FGCOLOR=0xFFF1; // placeholder
   #define BACKLIGHT 38
   #define MINBRIGHT 165
   #define SPEAKER M5Cardputer.Speaker
-  #define BITMAP M5Cardputer.Display.drawBmp(NEMOMatrix, 97338)
+  #define BITMAP Serial.println("unsupported")
   #define SD_CLK_PIN 40
   #define SD_MISO_PIN 39
   #define SD_MOSI_PIN 14
@@ -318,18 +318,11 @@ int dh_pkts = 0;
 #include "wifispam.h"
 #include "sd.h"
 #include "portal.h"
-#include "NEMOMatrix.h"
 #include "songs.h"
 #include "localization.h"
 #include <BLEUtils.h>
 #include <BLEServer.h>
 
-#include "deauth_hunter.h"                                                          //DEAUTH HUNTER
-#include "ble_hunter.h"                                                             //BLE HUNTER
-#include "pineap_hunter.h"                                                          //PINEAP HUNTER
-#if defined(CARDPUTER)
-#include "badusb_hunter.h"                                                          //BADUSB HUNTER
-#endif
 struct MENU {
   char name[19];
   int command;
@@ -2535,11 +2528,11 @@ ProcessHandler processes[] = {
   {19, portal_setup, portal_loop, "Captive Portal"},
   {22, color_setup, color_loop, "Color Settings"},
   {23, theme_setup, theme_loop, "Theme Settings"},
-  {24, deauth_hunter_setup, deauth_hunter_loop, "Deauth Hunter"},
-  {25, ble_hunter_setup, ble_hunter_loop, "BLE Hunter"},
-  {26, pineap_hunter_setup, pineap_hunter_loop, "PineAP Hunter"},
+  // {24, deauth_hunter_setup, deauth_hunter_loop, "Deauth Hunter"},
+  // {25, ble_hunter_setup, ble_hunter_loop, "BLE Hunter"},
+  // {26, pineap_hunter_setup, pineap_hunter_loop, "PineAP Hunter"},
 #if defined(CARDPUTER)
-  {27, badusb_hunter_setup, badusb_hunter_loop, "BadUSB Hunter"},
+  // {27, badusb_hunter_setup, badusb_hunter_loop, "BadUSB Hunter"},
 #endif
   {29, bh_rssi_setup, bh_rssi_loop, "BH RSSI Setting"},
   {30, dh_rssi_setup, dh_rssi_loop, "DH RSSI Setting"}, 
