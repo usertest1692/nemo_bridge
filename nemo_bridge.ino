@@ -1,4 +1,5 @@
 // Nemo Firmware for the M5 Stack Stick C Plus
+// Trigger: Force clean build
 // github.com/n0xa | IG: @4x0nn
 
 // -=-=-=-=-=-=- Uncomment the platform you're building for -=-=-=-=-=-=-
