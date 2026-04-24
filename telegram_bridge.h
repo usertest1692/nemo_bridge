@@ -109,8 +109,8 @@ void telegram_bridge_setup() {
   Serial.print("[TG] Target SSID: "); Serial.println(TG_SSID);
   
   // SYNC TIME for SSL (India GMT +5:30)
-  configTime(19800, 0, "pool.ntp.org", "time.nist.gov");
-  Serial.println("[TG] NTP Sync Started (India Timezone)...");
+  configTzTime("IST-5:30", "pool.ntp.org", "time.nist.gov");
+  Serial.println("[TG] NTP Sync Started (Modern IST String)...");
   
   WiFi.begin(TG_SSID, TG_PASS);
 }

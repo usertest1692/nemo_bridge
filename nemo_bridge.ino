@@ -53,7 +53,10 @@ uint16_t FGCOLOR=0xFFF1; // placeholder
 
   // -=-=- ALIASES -=-=-
   #define DISP M5.Display
-  #define IRLED 9
+  #define IRLED 9  // Primary IR
+  #define IRLED2 19 // Alternative IR (Plus2 Shell)
+  #define IRLED3 26 // Alternative IR (Unit Shell)
+  
   #define SPEAKER M5.Speaker
   //#define BITMAP M5.Display.drawBitmap(0, 0, 320, 240, NEMOMatrix) // This doesn't work, generates static.
   #define BITMAP Serial.println("unsupported")
@@ -1342,7 +1345,16 @@ void sendAllCodes() {
       rawData[k * 2] = offtime * 10;
       rawData[(k * 2) + 1] = ontime * 10;
     }
+    IrSender.setSendPin(IRLED);
     IrSender.sendRaw(rawData, (numpairs * 2), freq);
+#ifdef IRLED2
+    IrSender.setSendPin(IRLED2);
+    IrSender.sendRaw(rawData, (numpairs * 2), freq);
+#endif
+#ifdef IRLED3
+    IrSender.setSendPin(IRLED3);
+    IrSender.sendRaw(rawData, (numpairs * 2), freq);
+#endif
     digitalWrite(IRLED, M5LED_OFF);
     bitsleft_r = 0;
     delay_ten_us(20500);
@@ -2438,7 +2450,15 @@ void setup() {
 #endif
 #if defined(IRLED)
   pinMode(IRLED, OUTPUT);
-  digitalWrite(IRLED, M5LED_OFF); //LEDOFF
+  digitalWrite(IRLED, M5LED_OFF); 
+#endif
+#if defined(IRLED2)
+  pinMode(IRLED2, OUTPUT);
+  digitalWrite(IRLED2, M5LED_OFF); 
+#endif
+#if defined(IRLED3)
+  pinMode(IRLED3, OUTPUT);
+  digitalWrite(IRLED3, M5LED_OFF); 
 #endif
 #if !defined(KB)
   pinMode(M5_BUTTON_HOME, INPUT);
