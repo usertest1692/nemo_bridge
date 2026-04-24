@@ -95,10 +95,12 @@ void tg_poll() {
 
 void telegram_bridge_setup() {
   tg_client.setInsecure(); // Simple SSL
-  Serial.println("==========================================");
-  Serial.println("[TG] Telegram Bridge Starting...");
-  Serial.print("[TG] Attempting WiFi: ");
-  Serial.println(TG_SSID);
+  Serial.println("\n--- TELEGRAM BRIDGE STARTUP ---");
+  Serial.print("[TG] Target SSID: "); Serial.println(TG_SSID);
+  Serial.print("[TG] Bot Token: "); 
+  String masked = String(TG_TOKEN).substring(0, 5) + "..." + String(TG_TOKEN).substring(String(TG_TOKEN).length()-5);
+  Serial.println(masked);
+  
   WiFi.begin(TG_SSID, TG_PASS);
 }
 
@@ -106,28 +108,28 @@ void telegram_bridge_loop() {
   static bool wasConnected = false;
   static unsigned long lastDebug = 0;
   
-  // Debug output every 5 seconds
   if (millis() - lastDebug > 5000) {
     lastDebug = millis();
-    Serial.print("[TG] WiFi Status Code: ");
-    Serial.print(WiFi.status());
-    switch(WiFi.status()) {
-      case WL_IDLE_STATUS: Serial.println(" (Idle)"); break;
-      case WL_NO_SSID_AVAIL: Serial.println(" (SSID Not Found)"); break;
-      case WL_SCAN_COMPLETED: Serial.println(" (Scan Done)"); break;
-      case WL_CONNECTED: Serial.println(" (Connected!)"); break;
-      case WL_CONNECT_FAILED: Serial.println(" (Connection Failed)"); break;
-      case WL_CONNECTION_LOST: Serial.println(" (Connection Lost)"); break;
-      case WL_DISCONNECTED: Serial.println(" (Disconnected)"); break;
-      default: Serial.println(" (Unknown)"); break;
+    int status = WiFi.status();
+    Serial.print("[TG] WiFi Status: ");
+    Serial.print(status);
+    switch(status) {
+      case WL_CONNECTED: 
+        Serial.print(" (CONNECTED) RSSI: "); 
+        Serial.println(WiFi.RSSI());
+        break;
+      case WL_NO_SSID_AVAIL: Serial.println(" (SSID NOT FOUND)"); break;
+      case WL_CONNECT_FAILED: Serial.println(" (AUTH FAILED)"); break;
+      default: Serial.println(" (Connecting...)"); break;
     }
   }
 
   if (WiFi.status() == WL_CONNECTED) {
     if (!wasConnected) {
       wasConnected = true;
-      Serial.println("[TG] WiFi SUCCESS! Sending startup message...");
-      tg_send_message("Device started and connected to WiFi. Send /test to verify.");
+      Serial.print("[TG] SUCCESS! IP: ");
+      Serial.println(WiFi.localIP());
+      tg_send_message("M5Stick Hybrid is ONLINE! 🚀\nIP: " + WiFi.localIP().toString());
     }
     
     if (millis() - tg_last_poll > tg_poll_interval) {

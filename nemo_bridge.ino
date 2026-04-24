@@ -2,8 +2,8 @@
 // github.com/n0xa | IG: @4x0nn
 
 // -=-=-=-=-=-=- Uncomment the platform you're building for -=-=-=-=-=-=-
-#define STICK_C_PLUS
-// #define STICK_C_PLUS2
+// #define STICK_C_PLUS
+#define STICK_C_PLUS2
 // #define STICKS3
 // #define STICK_C
 // #define CARDPUTER
@@ -78,17 +78,15 @@ uint16_t FGCOLOR=0xFFF1; // placeholder
   #define TINY_TEXT 1
   // -=-=- FEATURES -=-=-
   #define ACTIVE_LOW_IR
-  #define M5LED 19
+  #define M5LED 10  // HYBRID FIX: Using original Plus Pin 10
   #define ROTATION
   #define USE_EEPROM
-  #define RTC      //TODO: plus2 has a BM8563 RTC but the class isn't the same, needs work.
-  // #define SDCARD   //Requires a custom-built adapter
+  #define RTC      
   #define PWRMGMT
   #define SPEAKER M5.Speaker
-  //#define SONG
   // -=-=- ALIASES -=-=-
   #define DISP M5.Display
-  #define IRLED 19
+  #define IRLED 9   // HYBRID FIX: Using original Plus Pin 9
   #define BITMAP M5.Display.drawBmp(NEMOMatrix, 97338)
   #define M5_BUTTON_MENU 35
   #define M5_BUTTON_HOME 37
@@ -98,9 +96,9 @@ uint16_t FGCOLOR=0xFFF1; // placeholder
   #define SD_CLK_PIN 0
   #define SD_MISO_PIN 36
   #define SD_MOSI_PIN 26
-  #define SD_CS_PIN 14 //can be -1, but sends a lot of messages of error in serial monitor
-  #define M5LED_ON HIGH
-  #define M5LED_OFF LOW
+  #define SD_CS_PIN 14 
+  #define M5LED_ON LOW  // HYBRID FIX: Active Low
+  #define M5LED_OFF HIGH // HYBRID FIX: Active High
 #endif
 
 #if defined(STICKS3)
@@ -2358,6 +2356,11 @@ void setup() {
   Serial.println("[SYS] M5 Stack Initialized!");
   Serial.print("[SYS] Detected Board: ");
   Serial.println((int)M5.getBoard()); 
+  Serial.println("--- PIN CONFIGURATION ---");
+  Serial.print("[PIN] IR LED: "); Serial.println(IRLED);
+  Serial.print("[PIN] M5 LED: "); Serial.println(M5LED);
+  Serial.print("[PIN] LED ON: "); Serial.println(M5LED_ON == LOW ? "LOW" : "HIGH");
+  Serial.println("-------------------------");
 #if defined(BACKLIGHT)
   pinMode(BACKLIGHT, OUTPUT); // Backlight analogWrite range ~150 - 255
 #endif
