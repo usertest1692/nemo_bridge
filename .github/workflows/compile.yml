@@ -126,7 +126,7 @@ jobs:
                               --build-property build.partitions=huge_app \
                               --build-property upload.maximum_size=3145728 \
                               --build-property compiler.cpp.extra_flags="${extra_flags}" \
-                              ./m5stick-nemo.ino
+                              ./nemo_bridge.ino
       
       - name: Create ${{ matrix.board.name }} Firmware Binary
         run: |
