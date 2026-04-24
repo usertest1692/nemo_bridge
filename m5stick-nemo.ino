@@ -3,16 +3,11 @@
 
 // -=-=-=-=-=-=- Uncomment the platform you're building for -=-=-=-=-=-=-
 // #define STICK_C_PLUS
-#define STICK_C_PLUS2
+// #define STICK_C_PLUS2
 // #define STICKS3
 // #define STICK_C
 // #define CARDPUTER
 // -=-=- Uncommenting more than one at a time will result in errors -=-=-
-
-#define USE_TELEGRAM // <--- ADDED FOR TELEGRAM BRIDGE
-#ifdef USE_TELEGRAM
-#include "telegram_bridge.h"
-#endif
 
 // -=-=- NEMO Language for Menu and Portal -=- Thanks, @marivaaldo and @Mmatuda! -=-=-
 // #define LANGUAGE_EN_US
@@ -1778,8 +1773,8 @@ void aj_adv(){
       packet[i++] =  0x10;  // Type ???
       esp_fill_random(&packet[i], 3);
       oAdvertisementData.addData(String((char *)packet, 17));
-      for (int k = 0; k < sizeof packet; k ++) {
-        Serial.printf("%02x", packet[k]);
+      for (int i = 0; i < sizeof packet; i ++) {
+        Serial.printf("%02x", packet[i]);
       }
       Serial.println("");
     } else if (swiftPair) {
@@ -1799,8 +1794,8 @@ void aj_adv(){
       for (int j = 0; j < display_name_len; j++) {
         packet[i + j] = display_name[j];
       }
-      for (int k = 0; k < size; k ++) {
-        Serial.printf("%02x", packet[k]);
+      for (int i = 0; i < size; i ++) {
+        Serial.printf("%02x", packet[i]);
       }
       Serial.println("");
 
@@ -1829,8 +1824,8 @@ void aj_adv(){
       packet[i++] = (rand() % 120) - 100; // -100 to +20 dBm
 
       oAdvertisementData.addData(String((char *)packet, 14));
-      for (int k = 0; k < sizeof packet; k ++) {
-        Serial.printf("%02x", packet[k]);
+      for (int i = 0; i < sizeof packet; i ++) {
+        Serial.printf("%02x", packet[i]);
       }
       Serial.println("");
     } else {
@@ -2443,10 +2438,6 @@ Serial.begin(115200);
   DISP.setRotation(rotation);
   DISP.setTextColor(FGCOLOR, BGCOLOR);
   bootScreen();
-  
-#ifdef USE_TELEGRAM
-  telegram_bridge_setup();
-#endif
 }
 
 // Wrapper functions for menuController.loop() to avoid lambda issues
@@ -2537,9 +2528,6 @@ void runCurrentLoop() {
 
 void loop() {
   // This is the code to handle running the main loops
-#ifdef USE_TELEGRAM
-  telegram_bridge_loop();
-#endif
   // Background processes
   switcher_button_proc();
   screen_dim_proc();
