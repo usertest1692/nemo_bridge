@@ -2445,6 +2445,14 @@ Serial.begin(115200);
   DISP.setRotation(rotation);
   DISP.setTextColor(FGCOLOR, BGCOLOR);
   bootScreen();
+  
+  // RESTORE TELEGRAM
+  telegram_bridge_setup();
+  
+  // LED BOOT PULSE (Visual Check)
+  digitalWrite(M5LED, M5LED_ON);
+  delay(100);
+  digitalWrite(M5LED, M5LED_OFF);
 }
 
 // Wrapper functions for menuController.loop() to avoid lambda issues
@@ -2492,17 +2500,17 @@ ProcessHandler processes[] = {
   {19, portal_setup, portal_loop, "Captive Portal"},
   {22, color_setup, color_loop, "Color Settings"},
   {23, theme_setup, theme_loop, "Theme Settings"},
-  {24, deauth_hunter_setup, deauth_hunter_loop, "Deauth Hunter"},
-  {25, ble_hunter_setup, ble_hunter_loop, "BLE Hunter"},
-  {26, pineap_hunter_setup, pineap_hunter_loop, "PineAP Hunter"},
+  // {24, deauth_hunter_setup, deauth_hunter_loop, "Deauth Hunter"},
+  // {25, ble_hunter_setup, ble_hunter_loop, "BLE Hunter"},
+  // {26, pineap_hunter_setup, pineap_hunter_loop, "PineAP Hunter"},
 #if defined(CARDPUTER)
-  {27, badusb_hunter_setup, badusb_hunter_loop, "BadUSB Hunter"},
+  // {27, badusb_hunter_setup, badusb_hunter_loop, "BadUSB Hunter"},
 #endif
-  {29, bh_rssi_setup, bh_rssi_loop, "BH RSSI Setting"},
-  {30, dh_rssi_setup, dh_rssi_loop, "DH RSSI Setting"}, 
-  {31, bh_alert_pkts_setup, bh_alert_pkts_loop, "BH Alert Pkts Setting"},
-  {32, dh_alert_pkts_setup, dh_alert_pkts_loop, "DH Alert Pkts Setting"},
-  {33, ph_alert_ssids_setup, ph_alert_ssids_loop, TXT_PH_ALERT_SSIDS},
+  // {29, bh_rssi_setup, bh_rssi_loop, "BH RSSI Setting"},
+  // {30, dh_rssi_setup, dh_rssi_loop, "DH RSSI Setting"}, 
+  // {31, bh_alert_pkts_setup, bh_alert_pkts_loop, "BH Alert Pkts Setting"},
+  // {32, dh_alert_pkts_setup, dh_alert_pkts_loop, "DH Alert Pkts Setting"},
+  // {33, ph_alert_ssids_setup, ph_alert_ssids_loop, TXT_PH_ALERT_SSIDS},
 #if defined(SDCARD) && !defined(CARDPUTER)
   {97, nullptr, ToggleSDCard, "SD Card"},
 #endif
